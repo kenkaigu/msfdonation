@@ -1,0 +1,13 @@
+{
+  "name": "msf-eastern-africa-donation-portal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Full-stack donation portal for MSF Eastern Africa.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

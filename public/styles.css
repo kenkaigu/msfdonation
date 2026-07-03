@@ -1,0 +1,324 @@
+/* design tokens */
+:root {
+  --stone: #EDEAE3;
+  --ink: #1B1B18;
+  --msf-red: #EE2A24;
+  --sage: #7A8471;
+  --clay: #B5473F;
+  --hairline: rgba(27, 27, 24, 0.12);
+  --bs-border-radius: 0;
+  --bs-box-shadow: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--stone);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", sans-serif;
+  position: relative;
+}
+
+/* optional full-page background photo, kept subtle behind the stone tint; absent by default */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/images/hero-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+  z-index: -2;
+}
+
+/* flat top vignette, not a gradient blend */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4vh;
+  background: rgba(27, 27, 24, 0.04);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 3.5rem;
+}
+
+/* typography */
+h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  line-height: 1.02;
+  margin: 1rem 0 0.5rem;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.secondary-label {
+  font-weight: 400;
+  color: rgba(27, 27, 24, 0.65);
+  font-size: 0.9rem;
+  margin-top: 0.85rem;
+}
+
+/* header */
+.wordmark {
+  display: inline-block;
+  border: 1px solid var(--ink);
+  padding: 0.35rem 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+}
+
+.hero-copy {
+  margin: 0;
+  max-width: 32rem;
+  line-height: 1.55;
+  color: rgba(27, 27, 24, 0.75);
+}
+
+/* section rhythm: hairline dividers between blocks, no card borders/shadows anywhere */
+.security-banner,
+.field-group {
+  border-top: 1px solid var(--hairline);
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.security-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.security-banner p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.security-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--sage);
+  flex-shrink: 0;
+}
+
+/* form controls, flat and borderless-shadow, overriding Bootstrap defaults */
+.form-control,
+.form-select {
+  border: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--ink);
+  padding: 0.7rem 0.85rem;
+  font-family: inherit;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--ink);
+  box-shadow: none;
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+  border-color: var(--clay);
+}
+
+.field-error {
+  color: var(--clay);
+  font-size: 0.85rem;
+  min-height: 1.1rem;
+  margin: 0.35rem 0 0;
+}
+
+/* amount presets */
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.preset-btn {
+  background: transparent;
+  border: 1px solid var(--hairline);
+  color: var(--ink);
+  padding: 0.75rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.preset-btn.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--stone);
+}
+
+/* signature element: the mono amount figure with the red rule, the only other red besides the submit button and the status dot in the notice */
+.amount-ledger {
+  margin-top: 1rem;
+  padding: 0.85rem 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.amount-ledger.has-amount {
+  border-top: 1px solid var(--msf-red);
+  border-bottom: 1px solid var(--msf-red);
+}
+
+.ledger-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(27, 27, 24, 0.6);
+}
+
+.ledger-value {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: clamp(1.65rem, 5vw, 2.5rem);
+  font-variant-numeric: tabular-nums;
+}
+
+/* radios */
+.radio-row {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 400;
+  margin-bottom: 0;
+  padding: 0.6rem 0;
+  min-height: 44px;
+}
+
+.radio-option input {
+  margin-top: 0.2rem;
+  accent-color: var(--ink);
+}
+
+.frequency-field {
+  margin-top: 1rem;
+}
+
+.method-fields {
+  margin-top: 1rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+/* small de-emphasized teaser link inside the SweetAlert2 success popup */
+.coming-soon-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(27, 27, 24, 0.6);
+}
+
+/* notice: the one status indicator allowed to use red, as a small marker before the text */
+.notice {
+  border-top: 1px solid var(--hairline);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.notice::before {
+  content: "";
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  background: var(--msf-red);
+  margin-right: 0.55rem;
+  vertical-align: middle;
+}
+
+.notice a {
+  color: var(--ink);
+}
+
+/* submit */
+.submit-btn {
+  width: 100%;
+  border: none;
+  background: var(--msf-red);
+  color: #fff;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* orchestrated page-load sequence, skipped entirely under prefers-reduced-motion */
+body.is-loading .reveal {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+body.is-ready .reveal {
+  opacity: 1;
+  transform: none;
+  transition: opacity 380ms ease-out, transform 380ms ease-out;
+}
+
+body.is-ready .reveal[data-reveal-order="0"] { transition-delay: 0ms; }
+body.is-ready .reveal[data-reveal-order="1"] { transition-delay: 60ms; }
+body.is-ready .reveal[data-reveal-order="2"] { transition-delay: 120ms; }
+body.is-ready .reveal[data-reveal-order="3"] { transition-delay: 180ms; }
+body.is-ready .reveal[data-reveal-order="4"] { transition-delay: 240ms; }
+body.is-ready .reveal[data-reveal-order="5"] { transition-delay: 300ms; }
+body.is-ready .reveal[data-reveal-order="6"] { transition-delay: 360ms; }
+body.is-ready .reveal[data-reveal-order="7"] { transition-delay: 400ms; }
+body.is-ready .reveal[data-reveal-order="8"] { transition-delay: 440ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media (min-width: 560px) {
+  .preset-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
