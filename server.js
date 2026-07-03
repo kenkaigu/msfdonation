@@ -163,6 +163,8 @@ app.use((error, req, res, next) => {
   res.status(500).json({ success: false, message: "Something went wrong. Please try again." });
 });
 
+export default app;
+
 const waitForListen = (server) => new Promise((resolve, reject) => {
   const cleanup = () => {
     server.off("listening", onListening);
