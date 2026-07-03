@@ -441,6 +441,22 @@ const wireEvents = (elements) => {
   elements.form.addEventListener("submit", (event) => handleSubmit(elements, event));
 };
 
+// this section handles the mobile "Read more" toggle for the donation story text.
+const wireStoryToggle = () => {
+  const toggle = document.getElementById("story-toggle");
+  const more = document.getElementById("story-more");
+
+  if (!toggle || !more) {
+    return;
+  }
+
+  toggle.addEventListener("click", () => {
+    const isExpanded = more.classList.toggle("is-expanded");
+    toggle.setAttribute("aria-expanded", String(isExpanded));
+    toggle.textContent = isExpanded ? "Show less" : "Read more";
+  });
+};
+
 // this section handles the staggered page-load animation, skipped under prefers-reduced-motion.
 const runLoadAnimation = () => {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -458,7 +474,28 @@ const runLoadAnimation = () => {
 const init = () => {
   const elements = getElements();
   wireEvents(elements);
+  wireStoryToggle();
   runLoadAnimation();
 };
 
+// this section reloads the page automatically in local development when the server sends an update signal.
+const setupLiveReload = () => {
+  const isLocalHost = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
+
+  if (!isLocalHost || !window.EventSource) {
+    return;
+  }
+
+  const source = new EventSource("/__live-reload");
+
+  source.addEventListener("reload", () => {
+    window.location.reload();
+  });
+
+  source.onerror = () => {
+    source.close();
+  };
+};
+
 init();
+setupLiveReload();

@@ -1,6 +1,7 @@
 // This section is the whole backend: Express setup, validation, rate limiting, and
 // the one route.
 import express from "express";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { process as processPayment } from "./payments/index.js";
@@ -19,8 +20,50 @@ const MPESA_LIMIT = 250000;
 const allowedKeys = ["name", "email", "amount", "method", "type", "frequency", "acceptTerms", "mpesaPhone", "cardNumber", "cardExpiry", "cardCvv"];
 
 const rateLimitStore = new Map();
+const liveReloadClients = new Set();
+let reloadTimer = null;
 
 app.use(express.static(publicDir));
+
+// this section provides a tiny dev-only browser reload stream for local file edits.
+app.get("/__live-reload", (req, res) => {
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive"
+  });
+
+  res.write("retry: 1000\n\n");
+  liveReloadClients.add(res);
+
+  req.on("close", () => {
+    liveReloadClients.delete(res);
+  });
+});
+
+const broadcastReload = () => {
+  for (const client of liveReloadClients) {
+    client.write("event: reload\ndata: refresh\n\n");
+  }
+};
+
+const scheduleReload = () => {
+  clearTimeout(reloadTimer);
+  reloadTimer = setTimeout(() => {
+    broadcastReload();
+  }, 100);
+};
+
+try {
+  fs.watch(publicDir, { recursive: true }, scheduleReload);
+  fs.watch(__dirname, { recursive: false }, (eventType, filename) => {
+    if (filename === "server.js") {
+      scheduleReload();
+    }
+  });
+} catch (error) {
+  console.warn("Live reload watcher could not be started:", error.message);
+}
 
 // this section handles serving the donation page.
 app.get("/", (req, res) => {

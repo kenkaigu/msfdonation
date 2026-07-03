@@ -23,18 +23,6 @@ body {
   position: relative;
 }
 
-/* optional full-page background photo, kept subtle behind the stone tint; absent by default */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("/images/hero-bg.jpg");
-  background-size: cover;
-  background-position: center;
-  opacity: 0.1;
-  z-index: -2;
-}
-
 /* flat top vignette, not a gradient blend */
 body::after {
   content: "";
@@ -97,8 +85,8 @@ label {
 .security-banner,
 .field-group {
   border-top: 1px solid var(--hairline);
-  padding-top: 1.25rem;
-  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
 }
 
 .security-banner {
@@ -176,13 +164,14 @@ label {
 
 /* signature element: the mono amount figure with the red rule, the only other red besides the submit button and the status dot in the notice */
 .amount-ledger {
+  display: none;
   margin-top: 1rem;
   padding: 0.85rem 0;
-  display: grid;
   gap: 0.3rem;
 }
 
 .amount-ledger.has-amount {
+  display: grid;
   border-top: 1px solid var(--msf-red);
   border-bottom: 1px solid var(--msf-red);
 }
